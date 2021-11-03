@@ -83,7 +83,7 @@ export default {
     this.loadLegend();
   },
   updated() {
-    this.makeChart();
+    this.$refs.chart && this.makeChart();
   },
   methods: {
     loadLegend() {
