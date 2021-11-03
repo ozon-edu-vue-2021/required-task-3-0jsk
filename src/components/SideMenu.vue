@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <div class="menu" v-click-outside="closeProfile">
     <div class="toolbar">
       <div class="toolbar__header">
         <template v-if="!isUserOpenned">
@@ -37,14 +37,14 @@
       </div>
       <div v-else class="profile">
         <div v-if="!person" class="profile__empty">Место пустое</div>
-
-        <PersonCard :person="person" />
+        <PersonCard v-else :person="person" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ClickOutside from "vue-click-outside";
 import Draggable from "vuedraggable";
 import { Doughnut as PieChart } from "vue-chartjs";
 import LegendItem from "./SideMenu/LegendItem.vue";
@@ -62,6 +62,9 @@ export default {
       default: null,
     },
   },
+  directives: {
+    ClickOutside,
+  },
   components: {
     LegendItem,
     Draggable,
@@ -78,6 +81,9 @@ export default {
   },
   created() {
     this.loadLegend();
+  },
+  updated() {
+    this.$refs.chart && this.makeChart();
   },
   methods: {
     loadLegend() {
