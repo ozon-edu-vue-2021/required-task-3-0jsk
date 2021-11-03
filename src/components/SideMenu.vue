@@ -82,6 +82,9 @@ export default {
   created() {
     this.loadLegend();
   },
+  updated() {
+    this.makeChart();
+  },
   methods: {
     loadLegend() {
       this.legend = legend;
