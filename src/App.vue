@@ -1,8 +1,12 @@
 <template>
   <div id="app">
     <div class="office">
-      <Map />
-      <SideMenu />
+      <Map @set-person="setPerson" />
+      <SideMenu
+        :person="person"
+        :is-user-openned="isUserOpen"
+        @update:isUserOpenned="isUserOpen = $event"
+      />
     </div>
   </div>
 </template>
@@ -13,6 +17,18 @@ import SideMenu from "./components/SideMenu.vue";
 
 export default {
   name: "App",
+  data() {
+    return {
+      isUserOpen: false,
+      person: null,
+    };
+  },
+  methods: {
+    setPerson(person) {
+      this.person = person;
+      this.isUserOpen = true;
+    },
+  },
   components: {
     Map,
     SideMenu,

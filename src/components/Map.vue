@@ -15,6 +15,7 @@ import MapSVG from "@/assets/images/map.svg";
 import Table from "@/assets/images/workPlace.svg";
 import tables from "@/assets/data/tables.json";
 import legend from "@/assets/data/legend.json";
+import people from "@/assets/data/people.json";
 import * as d3 from "d3";
 
 export default {
@@ -40,6 +41,7 @@ export default {
     this.svg = d3.select(this.$refs.svg);
     this.g = this.svg.select("g");
     this.tableSVG = d3.select(this.$refs.table); // получаем шаблон стола
+
     if (this.g) {
       this.drawTables();
     } else {
@@ -49,6 +51,12 @@ export default {
     this.isLoading = false;
   },
   methods: {
+    emitPerson(tableId) {
+      this.$emit(
+        "set-person",
+        people.find((p) => p.tableId === tableId)
+      );
+    },
     drawTables() {
       // создаем группу для рабочик мест
       const svgTablesGroupPlace = this.g
@@ -61,7 +69,11 @@ export default {
           .append("g")
           .attr("transform", `translate(${table.x}, ${table.y}) scale(0.5)`)
           .attr("id", table._id)
-          .classed("employer-place", true);
+          .classed("employer-place", true)
+          .on("click", (event) => {
+            event.stopPropagation();
+            this.emitPerson(table._id);
+          });
 
         // устанавливает стол в группу
         targetSeat
